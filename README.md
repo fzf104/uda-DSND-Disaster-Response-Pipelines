@@ -10,9 +10,9 @@ This is a project from Udacity which is about to setup piplines and to publish v
   
  ## 2. File description
  
-> - app
-> | - template
-> | |- master.html  # main page of web app
+> \- app
+> \| - template
+> \| |- master.html  # main page of web app
 > | |- go.html  # classification result page of web app
 > |- run.py  # Flask file that runs app
 
