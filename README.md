@@ -52,14 +52,12 @@ under udacity workspace environment, type：
 <pre>
 evn | grep WORK
 </pre>
-get spaceid and spacedomain
-![image](https://s3.cn-north-1.amazonaws.com.cn/u-img/8090fa27-82d0-4a02-8cf0-1d60cfe87c97)
-
-in the new brower window, type:
+get spaceid and spacedomain. In the new brower window, type:
 <pre>
-https://SPACEID-3001.SPACEDOMAIN
+https://SPACEID-3001.SPACEDOMAIN #replace the spaceid and spacedomain.
 </pre>
-replace the spaceid and spacedomain. Then,
+
+Back to the terminal, type:
 
 <pre>
 > cd app
