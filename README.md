@@ -10,6 +10,7 @@ This is a project from Udacity which is about to setup piplines and to publish v
   
  ## 2. File description
  
+<pre>
  \- app
  \| \- template
  \| \|\- master.html  # main page of web app
@@ -31,3 +32,4 @@ This is a project from Udacity which is about to setup piplines and to publish v
  \- ETL Pipeline Preparation.ipynb # ETL data processing
  \- ML Pipeline Preparation.html
  \- ML Pipeline Preparation.ipynb # Modeling 
+ </pre>
