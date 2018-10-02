@@ -1,7 +1,7 @@
 # DisasterResponse Project
 
 ## 1. Project about
-This is a project from Udacity which is about to setup piplines and to publish visulizaiont on web. 3 main skills are used in:
+This is a project from Udacity which is about to setup piplines and to publish visulizaiont on web. Five main skills are used in:
   - I/O
   - natural language processing
   - supervised machine learning with multioutputclassifier
