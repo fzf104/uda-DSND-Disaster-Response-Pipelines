@@ -35,13 +35,8 @@ def load_data(database_filepath):
     X = df['message']
 
     # exogenous variable is the dataframe of 36 categories
-    cat = df.columns[-36:]
-    Y = df[cat]
-
-    # category names
-    category_names = []
-    for val in np.unique(Y.values):
-        category_names.append("class_" + str(val))
+    category_names = df.columns[-36:]
+    Y = df[category_names]
     
     return X, Y, category_names
 
@@ -62,28 +57,23 @@ def tokenize(text):
 
 
 def build_model():
-    pipeline = Pipeline([
+    model = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize, lowercase=True, min_df=10)),
-        ('tfidf', TfidfTransformer(smooth_idf=False)),
+        ('tfidf', TfidfTransformer(smooth_idf=True)),
         ('clf', MultiOutputClassifier(AdaBoostClassifier()))
         ])
 
-    return pipeline
+    return model
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
     y_pred = model.predict(X_test)
     
     # classification report
-    print(classification_report(Y_test.iloc[:,0], y_pred[:,0],
+    print(classification_report(Y_test, y_pred,
                                 target_names=category_names,
                                 digits=2))
-    # average accuracy score
-    score = []
-    for i in range(36):
-        score.append(accuracy_score(Y_test.iloc[:,i], y_pred[:,i]))
-    print("Average accuracy_socore: {:.4f}".format(np.mean(score)))
-
+    
 
 
 def save_model(model, model_filepath):

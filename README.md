@@ -32,19 +32,22 @@ This is a project from Udacity which is about to setup piplines and to publish v
  - ETL Pipeline Preparation.ipynb # ETL data processing
  - ML Pipeline Preparation.html
  - ML Pipeline Preparation.ipynb # Modeling 
+ - graphics.ipynb # graphics by pandas
+ - master_snap.png # index with 2 graphics on web
+ - go_snap.png # disaster predictor on web
  </pre>
 
 ## 3. How to Run?
 ### 3.1 process_data.py
 <pre>
 > cd data
-> python process_data.py disaster_messages.csv disaster_categories.csv DisasterResponse.db
+> python process_data.py 'disaster_messages.csv' 'disaster_categories.csv' 'DisasterResponse.db'
 </pre>
 
 ### 3.2 train_classifier.py
 <pre>
 > cd models
-> python train_classifier.py ../data/DisasterResponse.db classifier.pkl
+> python train_classifier.py '../data/DisasterResponse.db' 'classifier.pkl'
 </pre>
 
 ### 3.3 run.py

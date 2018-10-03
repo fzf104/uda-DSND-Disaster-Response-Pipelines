@@ -1,59 +1,38 @@
-# import packages
 import sys
 import pandas as pd
 from sqlalchemy import create_engine
-import sqlite3
 
-import argparse
 
-def load_data(messages_path, categories_path, database_filepath):
-    """
-        load_data is a function to load files of disaster, 
-        then clean them and load clean data to SQL database.
-        input: 
-            - disaster_messages.csv
-            - disaster_categories.csv
-        output:
-            - DisasterResponse.db
-
-    """
-
-    # read in file
-    messages = pd.read_csv(messages_path)
-    categories = pd.read_csv(categories_path)
-    
-    ## merge 2 datasets into a dataframe 
+def load_data(messages_filepath, categories_filepath):
+    messages = pd.read_csv(messages_filepath)
+    categories = pd.read_csv(categories_filepath) 
     df = pd.merge(messages, categories, on="id")
-
-
-    # clean data
-
-    ## split the column of categories into 36 categories accordingly
+    return df
+             
+def clean_data(df):
+    # split the column of categories into 36 categories accordingly
     categories = df['categories'].str.split(";", expand=True)
-    ## set the column name as the first row without labels
+    # set the column name as the first row without labels
     row = categories.loc[0,:]
     categories.columns = row.apply(lambda x: x.split('-')[0])
-
-    ## extract lables from the cells and turn them to be numeric
+    
+    # extract lables from the cells and turn them to be numeric
     for col in categories:
         categories[col] = categories[col].str.split('-').str[-1]
         categories[col] = pd.to_numeric(categories[col])
+        categories[col] = categories[col].apply(lambda x: 1 if x>1 else x)
 
-    ## del the column of categories and concat the df of categories
+    # del the column of categories and concat the df of categories
     df.drop('categories', axis=1, inplace=True)
     df = pd.concat([df, categories], axis=1)
     
-    ## drop duplicates
+    # drop duplicates
     df.drop_duplicates(inplace=True)
+    return df
 
-    # load to database
-    
-    ## (local) engine = sqlite3.Connection(database_filepath)
-    
-    engine = create_engine('sqlite:///InsertDatabaseName.db')
+def save_data(df, database_filename):
+    engine = create_engine('sqlite:///' + database_filename)
     df.to_sql('DisasterResponse', engine, if_exists='replace', index=False) 
-
-    print("work")   
 
 
 def main():
@@ -63,8 +42,13 @@ def main():
 
         print('Loading data...\n    MESSAGES: {}\n    CATEGORIES: {}'
               .format(messages_filepath, categories_filepath))
-        df = load_data(messages_filepath, categories_filepath,database_filepath)
+        df = load_data(messages_filepath, categories_filepath)
 
+        print('Cleaning data...')
+        df = clean_data(df)
+        
+        print('Saving data...\n    DATABASE: {}'.format(database_filepath))
+        save_data(df, database_filepath)
         
         print('Cleaned data saved to database!')
     
@@ -73,8 +57,9 @@ def main():
               'datasets as the first and second argument respectively, as '\
               'well as the filepath of the database to save the cleaned data '\
               'to as the third argument. \n\nExample: python process_data.py '\
-              'disaster_messages.csv' 'disaster_categories.csv '\
+              'disaster_messages.csv disaster_categories.csv '\
               'DisasterResponse.db')
+
 
 if __name__ == '__main__':
     main()
