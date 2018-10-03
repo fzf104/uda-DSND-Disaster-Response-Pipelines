@@ -24,7 +24,13 @@ from sklearn.metrics import classification_report, accuracy_score
 
 
 def load_data(database_filepath):
-    
+    """
+    Load data from database, and return the endogenous and exogenous vaules.
+    The  endogenous are the contents of the messages, 
+    and the exogenous are the values of the categories.
+    The category name will be also return.
+
+    """
     # read data
     ## (local) engine = sqlite3.connect(database_filepath)
     ## (local) df = pd.read_sql('SELECT * FROM DisasterResponse', engine)
@@ -42,6 +48,12 @@ def load_data(database_filepath):
 
 
 def tokenize(text):
+    """
+    Extract word from text, eliminate punctuation and stopwords,
+    return them after lemmatized.
+
+    """
+
     stop_words = stopwords.words('english')
     lemmatizer = WordNetLemmatizer()
 
@@ -57,6 +69,13 @@ def tokenize(text):
 
 
 def build_model():
+    """
+    In order to build a nature language processing surpervised model, 
+    and then improve the modal through GridSearchCV method.
+    
+    """
+
+
     pipeline = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize, lowercase=True, min_df=10)),
         ('tfidf', TfidfTransformer(smooth_idf=True)),
@@ -75,6 +94,11 @@ def build_model():
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    """
+    Evaluate the model by using classification report method, 
+    and then print the result.
+
+    """
     y_pred = model.predict(X_test)
     
     # classification report
@@ -85,12 +109,32 @@ def evaluate_model(model, X_test, Y_test, category_names):
 
 
 def save_model(model, model_filepath):
+    """
+    Save the trained model to pickle file.
+
+    """
+    
+
     with open(model_filepath,"wb") as pkl_file:
         pickle.dump(model, pkl_file)
     pkl_file.close()
 
 
 def main():
+    """
+    This function is the main function in order to conbine all functions hear.
+    1. Loda_data
+    2. build_model
+    3. model fit
+    4. evaluate_model
+    5. save_model
+
+    And make sure arguments will be inputed from command line properly,
+    if not return the instruction.
+
+    """
+    
+
     if len(sys.argv) == 3:
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))

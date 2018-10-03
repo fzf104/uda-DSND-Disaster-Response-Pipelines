@@ -4,12 +4,26 @@ from sqlalchemy import create_engine
 
 
 def load_data(messages_filepath, categories_filepath):
+    """
+    load message and categories files, 
+    merged them anad return dataframe .
+
+    """
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath) 
     df = pd.merge(messages, categories, on="id")
     return df
              
 def clean_data(df):
+    """
+    extract column names and values from texts for categories,
+    convert values of categories to be numeric, 
+    make sure all categories values here are dummy variable,
+    then return the clean data.
+
+    """
+    
+
     # split the column of categories into 36 categories accordingly
     categories = df['categories'].str.split(";", expand=True)
     # set the column name as the first row without labels
@@ -31,11 +45,30 @@ def clean_data(df):
     return df
 
 def save_data(df, database_filename):
+    """
+    save dataframe to database
+
+    """
+
+
     engine = create_engine('sqlite:///' + database_filename)
     df.to_sql('DisasterResponse', engine, if_exists='replace', index=False) 
 
 
 def main():
+    """
+    This function is to combine all steps of process data in order including:
+    1. load_data
+    2. clean_data
+    3. save_data
+
+    Make sure 3 arguments will be inputed from command line properly, 
+    if not return the instruction.  
+
+    """
+    
+
+
     if len(sys.argv) == 4:
 
         messages_filepath, categories_filepath, database_filepath = sys.argv[1:]

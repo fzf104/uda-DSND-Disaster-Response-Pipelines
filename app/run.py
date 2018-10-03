@@ -15,6 +15,13 @@ from sqlalchemy import create_engine
 app = Flask(__name__)
 
 def tokenize(text):
+    """
+    This function is to extract word from text, eliminate punctuation and stopwords,
+    return them after lemmatized.
+    This function is a parameter of the classifier model. 
+
+    """
+
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
 
@@ -38,6 +45,10 @@ model = joblib.load("../models/classifier.pkl")
 @app.route('/index')
 
 def index():
+    """
+    Render template of master.html, and add 2 graphics in the web page.:
+
+    """
     
     # extract data needed for visuals
     # TODO: Below is an example - modify to extract data for your own visuals
@@ -52,9 +63,6 @@ def index():
     category_names = list(category_counts.index)
 
 
-
-
-    
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
     graphs = [
@@ -108,6 +116,10 @@ def index():
 # web page that handles user query and displays model results
 @app.route('/go')
 def go():
+    """
+    set the web page go.html as a query and result.
+
+    """
     # save user input in query
     query = request.args.get('query', '') 
 
