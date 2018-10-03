@@ -69,4 +69,8 @@ Back to the terminal, type:
 
 refresh the webpage.
 
+## 4. Link to GitHub repository
+<pre>
+https://github.com/fzf104/uda-DSND-Disaster-Response-Pipelines
+</pre>
 

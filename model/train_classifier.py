@@ -16,7 +16,7 @@ from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.multioutput import MultiOutputClassifier
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.pipeline import Pipeline
 
 from sklearn.metrics import classification_report, accuracy_score
@@ -57,11 +57,19 @@ def tokenize(text):
 
 
 def build_model():
-    model = Pipeline([
+    pipeline = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize, lowercase=True, min_df=10)),
         ('tfidf', TfidfTransformer(smooth_idf=True)),
         ('clf', MultiOutputClassifier(AdaBoostClassifier()))
         ])
+
+    parameters = {
+        'vect__min_df':[1,10,50],
+        'vect__lowercase': [True, False],
+        'tfidf__smooth_idf': [True, False]
+        }
+
+    model = GridSearchCV(pipeline, param_grid=parameters, cv=2)
 
     return model
 
