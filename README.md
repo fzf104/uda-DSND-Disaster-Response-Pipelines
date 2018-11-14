@@ -53,7 +53,7 @@ This is a project from Udacity which is about to setup pipelines and to publish 
 ### 3.3 run.py
 under udacity workspace environment, type：
 <pre>
-evn | grep WORK
+env | grep WORK
 </pre>
 get spaceid and spacedomain. In the new brower window, type:
 <pre>
